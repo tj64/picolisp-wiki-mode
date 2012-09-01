@@ -16,9 +16,18 @@
    [2012-09-01 Sa 17:01]
 ** TODO deal with keybindings that don't work on the console
    [2012-09-01 Sa 17:00]
-** figure out and describe in README how to use Tramp for remotely edit PicoLisp-Wiki files 
+** CANCELLED figure out and describe in README how to use Tramp for remotely edit PicoLisp-Wiki files :CANCELLED:
+   CLOSED: [2012-09-01 Sa 20:36]
+   :LOGBOOK:
+   - State "CANCELLED"  from "TODO"       [2012-09-01 Sa 20:36] \\
+     Not possible
+   :END:
    [2012-09-01 Sa 16:39]
-** TODO fix regexps - make them work when linebreaks are involved
+** DONE fix regexps - make them work when linebreaks are involved
+   CLOSED: [2012-09-02 So 01:53]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-09-02 So 01:53]
+   :END:
    [2012-09-01 Sa 16:38]
 ** TODO fix unreliable fontification issue
    [2012-09-01 Sa 16:37]

@@ -62,11 +62,11 @@
 ;; Usage:
 
 ;; Keybindings for inserting are grouped by prefixes based on their
-;; function. For example, commands inserting links and lists begin with
-;; `C-c C-l`, those inserting floating content with `C-c C-f`, all other
-;; inserting commands with `C-c C-c`. The primary commands in each group
-;; will are described below. You can obtain a list of all keybindings by
-;; pressing `C-c C-h`.
+;; function. For example, commands inserting links and lists begin
+;; with `C-c C-l`, those inserting floating content with `C-c C-f`,
+;; all other inserting commands with `C-c C-c`. The commands in each
+;; group are described below. You can obtain a list of all keybindings
+;; by pressing `C-c C-h`.
 
 ;;     ;; Element insertion
 ;;     "\C-c\C-l n" Insert Internal Link
@@ -400,31 +400,38 @@
   "Regular expression for an external link.")
 
 (defconst picolisp-wiki-regex-comment
-  "\\(#{\\)\\(.*\\)\\(}\\)"
+  "\\(#{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for an external link.")
 
 (defconst picolisp-wiki-regex-header-1
-  "\\(1{\\)\\(.*\\)\\(}\\)"
+  "\\(1{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for level 1 headers.")
 
 (defconst picolisp-wiki-regex-header-2
-  "\\(2{\\)\\(.*\\)\\(}\\)"
+  "\\(2{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for level 2 headers.")
 
 (defconst picolisp-wiki-regex-header-3
-  "\\(3{\\)\\(.*\\)\\(}\\)"
+  "\\(3{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for level 3 headers.")
 
 (defconst picolisp-wiki-regex-header-4
-  "\\(4{\\)\\(.*\\)\\(}\\)"
+  "\\(4{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for level 4 headers.")
 
 (defconst picolisp-wiki-regex-header-5
-  "\\(5{\\)\\(.*\\)\\(}\\)"
+  "\\(5{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for level 5 headers.")
 
 (defconst picolisp-wiki-regex-header-6
-  "\\(6{\\)\\(.*\\)\\(}\\)"
+  "\\(6{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for level 6 headers.")
 
 (defconst picolisp-wiki-regex-hr
@@ -432,19 +439,28 @@
   "Regular expression for matching Picolisp-Wiki horizontal rules.")
 
 (defconst picolisp-wiki-regex-left-floating-content
-  "\\(<{\\)\\(.*\\)\\(}\\)"
+  "\\(<{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for matching left-floating-content.")
 
 (defconst picolisp-wiki-regex-non-floating-content
-  "\\(@{\\)\\(.*\\)\\(}\\)"
+  "\\(@{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for matching non-floating-content.")
 
 (defconst picolisp-wiki-regex-right-floating-content
-  "\\(>{\\)\\(.*\\)\\(}\\)"
+  "\\(>{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for matching right-floating-content.")
 
 (defconst picolisp-wiki-regex-pre-block
-  "\\(:{\\)\\(.*\\)\\(}\\)"
+   "\\(:{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
+
+;;  "\\(:{\\)\\([ \t\n]*[^}]+\\)\\(}\\)"
+
+;;   "\\(:{\\)\\([ 	
+;; ][^}]+\\)\\(}\\)"
   "Regular expression for matching preformatted text sections.")
 
 ;; (defconst picolisp-wiki-regex-unordered-list
@@ -478,19 +494,23 @@
   "Regular expression for matching a closing brace.")
 
 (defconst picolisp-wiki-regex-list-item
-  "\\(-{\\)\\(.*\\)\\(}\\)"
+  "\\(-{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for matching a list item.")
 
 (defconst picolisp-wiki-regex-bold
-  "\\(!{\\)\\(.*\\)\\(}\\)"
+  "\\(!{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for matching bold text.")
 
 (defconst picolisp-wiki-regex-italic
-  "\\(/{\\)\\(.*\\)\\(}\\)"
+  "\\(/{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for matching italic text.")
 
 (defconst picolisp-wiki-regex-underlined
-   "\\(_{\\)\\(.*\\)\\(}\\)"
+   "\\(_{\\)\\([ 	
+]*[^}]+\\)\\(}\\)"
   "Regular expression for matching underlined text.")
 
 (defconst picolisp-wiki-regex-line-break
@@ -722,7 +742,9 @@ If Transient Mark mode is on and a region is active, it is wrapped in an unorder
 
 (defun picolisp-wiki-insert-ordered-list ()
   "Insert an ordered list.
-If Transient Mark mode is on and a region is active, it is wrapped in an ordered list (the region should only contain list-items)."
+If Transient Mark mode is on and a region is active, it is
+wrapped in an ordered list (the region should only contain
+list-items)."
   (interactive)
   (end-of-line)
   (newline)
@@ -737,16 +759,27 @@ If Transient Mark mode is on and a region is active, it is wrapped in an ordered
 
 
 ;; FIXME consider escaped braces '\{'and '\}' inside list items
-(defun picolisp-wiki--inside-list-item-p ()
-  "Return t if inside list-item, nil otherwise"
+(defun picolisp-wiki--inside-list-item-p (&optional second-trial-p)
+  "Return t if inside list-item, nil otherwise.
+This function takes care of the (common) case when there is one
+nested markup inside the list item, e.g. a link or a bold text,
+and point is inside the nested markup braces."
   (save-excursion
     (let ((pt (point)))
       (search-backward "{" nil t 1)
       (backward-char)
       (if (not (looking-at "-{"))
-          nil
+          (if (and               
+               (not second-trial-p)
+               (looking-at
+                (concat "\\(\\*\\|\\+\\|&\\|/\\|_\\|\\^\\|"
+                        "<\\|>\\|@\\|!\\|=\\|:\\|#\\)\\({\\)")))
+              (picolisp-wiki--inside-list-item-p 'SECOND-TRIAL-P)
+            nil)
         (and
-         (search-forward "}" nil t 1)
+         (if second-trial-p
+             (search-forward-regexp "}[^}]*}" nil t 1)
+           (search-forward "}" nil t 1))
          (setq item-end (point))
          (> item-end pt))))))
         
