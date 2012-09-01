@@ -1,0 +1,39 @@
+* TODO Version 1.1
+  [2012-09-01 Sa 16:35]
+
+** TODO announce new version in mailing-list
+  [2012-09-01 Sa 16:35]
+** TODO change version number picolisp-wiki-mode.el
+  [2012-09-01 Sa 16:35]
+** TODO replace download on github
+  [2012-09-01 Sa 16:35]
+
+
+* TODO Version 1.0
+  [2012-09-01 Sa 16:35]
+
+** TODO ask in Emacs-developer list if mode might be part of Emacs
+   [2012-09-01 Sa 17:01]
+** TODO deal with keybindings that don't work on the console
+   [2012-09-01 Sa 17:00]
+** figure out and describe in README how to use Tramp for remotely edit PicoLisp-Wiki files 
+   [2012-09-01 Sa 16:39]
+** TODO fix regexps - make them work when linebreaks are involved
+   [2012-09-01 Sa 16:38]
+** TODO fix unreliable fontification issue
+   [2012-09-01 Sa 16:37]
+** TODO announce new version in mailing-list
+  [2012-09-01 Sa 16:35]
+** TODO change version number picolisp-wiki-mode.el
+  [2012-09-01 Sa 16:35]
+** TODO replace download on github
+  [2012-09-01 Sa 16:35]
+
+
+* TODO Version 0.9
+   [2012-09-01 Sa 16:34]
+
+** TODO announce new version in mailing-list
+  [2012-09-01 Sa 17:01]
+** TODO put download on github
+  [2012-09-01 Sa 17:01]
