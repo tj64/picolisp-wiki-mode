@@ -21,12 +21,12 @@ Make sure to place `picolisp-wiki-mode.el` somewhere in the
 load-path and add the following lines to your `.emacs` file to
 associate picolisp-wiki-mode with `.text` files:
 
-`
+
     (autoload 'picolisp-wiki-mode "picolisp-wiki-mode"
        "Major mode for editing Picolisp-Wiki files" t)
     (setq auto-mode-alist
        (cons '("\\.text" . picolisp-wiki-mode) auto-mode-alist))  
-`
+
 
 There is no consensus on an official file extension so change `.text` to
 `.plw`, `.lw`, `.lwik`, or whatever you call your picolisp-wiki files.
@@ -98,7 +98,7 @@ and fully visible.
 
   * Outline Navigation:
 
-    Navigation between headings is possible using `outline-mode'.
+    Navigation between headings is possible using `outline-mode`.
     Use `C-M-n` and `C-M-p` to move between the next and previous
     visible headings.  Similarly, `C-M-f` and `C-M-b` move to the
     next and previous visible headings at the same level as the one
@@ -113,7 +113,7 @@ commands.
 picolisp-wiki-mode is based on `markdown.el` (available from ELPA).
 It has benefited greatly from the efforts of the following people:
 
-  * Thorsten Jolitz <tjolitz@gmail.com>
+  * Thorsten Jolitz <tjolitz [at] gmail.com>
 
 ## Bugs: ##
 
@@ -123,7 +123,7 @@ todo's, see the `HISTORY.org` file in the
 [github-repo](https://github.com/tj64/picolisp-wiki-mode).
 
 If you find any bugs in picolisp-wiki-mode, please construct a test case
-or a patch and email me at <tjolitz@gmail.com>.
+or a patch and email me at <tjolitz [at] gmail.com>.
 
 ## History: ##
 

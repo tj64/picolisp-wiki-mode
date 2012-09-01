@@ -9,7 +9,7 @@
   [2012-09-01 Sa 16:35]
 
 
-* TODO Version 1.0
+* NEXT Version 1.0
   [2012-09-01 Sa 16:35]
 
 ** TODO ask in Emacs-developer list if mode might be part of Emacs
@@ -30,10 +30,22 @@
   [2012-09-01 Sa 16:35]
 
 
-* TODO Version 0.9
+* DONE Version 0.9
+  CLOSED: [2012-09-01 Sa 17:44]
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2012-09-01 Sa 17:44]
+  :END:
    [2012-09-01 Sa 16:34]
 
-** TODO announce new version in mailing-list
+** DONE announce new version in mailing-list
+   CLOSED: [2012-09-01 Sa 17:44]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-09-01 Sa 17:44]
+   :END:
   [2012-09-01 Sa 17:01]
-** TODO put download on github
+** DONE put download on github
+   CLOSED: [2012-09-01 Sa 17:44]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-09-01 Sa 17:44]
+   :END:
   [2012-09-01 Sa 17:01]
