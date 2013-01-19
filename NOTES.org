@@ -1,0 +1,160 @@
+* Font-lock
+** font-lock-syntactic-keywords: evaluating arbitrary elisp inside matchers
+*** Question
+From: "immerrr again..." <immerrr+lua@gmail.com>
+Subject: font-lock-syntactic-keywords: evaluating arbitrary elisp inside
+	matchers?
+Newsgroups: gmane.emacs.devel
+To: emacs-devel@gnu.org
+Date: Sat, 22 Sep 2012 00:48:32 +0400 (3 days, 11 hours, 2 minutes ago)
+
+Hi all
+
+I'm hacking lua-mode in my spare time and one thing that bothered me a
+lot is Lua's long-bracket-constructs. For those who don't know what I'm
+talking about, here's a short recap:
+
+. A _long bracket of level N_ consists of two square brackets with N
+  equals signs between them, N >= 0.
+
+. An _opening long bracket_ has two _opening square brackets_, e.g "[[",
+  "[=[", "[===[".
+
+. A _closing long bracket_ has two _closing square brackets_, e.g. "]]",
+  "]=]", "]===]".
+
+. A _long string_ starts with an opening long bracket of any level and
+  ends at the first closing long bracket of the same level.
+
+. A comment starts with a double hyphen "--" anywhere outside a string.
+  If the text immediately after "--" is not an opening long bracket, the
+  comment is a _short comment_, which runs until the end of the line.
+  Otherwise, it is a _long comment_, which runs until the corresponding
+  closing long bracket.
+
+Here are some characteristic situations for the rules above:
+
+. code [[ string ]] code
+
+. code -- comment till EOL
+
+. code --[[ comment ]] code
+
+. code -- [[ comment till EOL ]]
+  because '--' is followed by space
+
+. code ---[[ comment till EOL ]]
+  because '--' is followed by '-'
+
+. code [===[ string   ]=] string --[=[ string ]===] code
+
+. code [===[ string ]===]  code  --[=[ comment ]=] code
+
+Obviously, Emacs character syntax flags are not enough to describe that.
+Currently, I'm trying to use `font-lock-syntactic-keywords' with the
+following rule to capture both long comments and long strings:
+
+1.    `(,(rx
+2.        (or (seq (or line-start (not (any "-")))
+3.                 (group-n 1 "-") "-[" (group-n 5 (0+ "=")))
+4.            (seq (group-n 3 "[")      (group-n 6 (0+ "="))))
+
+5.        "[" (minimal-match (0+ anything)) "]"
+
+6.        (or (seq (backref 5) (group-n 2 "]"))
+7.            (seq (backref 6) (group-n 4 "]"))))
+
+8.     (1 "!" nil t) (2 "!" nil t)
+9.    (3 "|" nil t) (4 "|" nil t))
+
+The construct is probably not obvious, so I'll elaborate a little bit.
+
+Lines 2-4 match opening brackets with optional double-dash and equals
+signs, line 2 makes sure that 3+ consecutive dash situations are
+unmatched and are interpreted as short comment. Note also, that there
+are separate groups sequences of equals signs for strings and comments,
+we'll get to them later.
+
+Line 5 matches inner square brackets and the content of the literal.
+
+Lines 6 and 7 match closing equals signs and square bracket. The
+matching alternative is deduced from the fact that if an optional group
+doesn't match, its backref won't match too. So, if it's a long comment,
+then the regexp will match groups 1 and 5 for the opening bracket --
+even if 5 is empty -- and 2 for the closing one since backref 6 won't
+match. If it's a long string, vice-versa, it will match groups 3,4 and
+6.
+
+Kudos to those who made it to this point, here go the questions:
+
+. Is it actually worth the while to optimize propertizing this way or
+  probably two separate rules would perform just as fine?
+
+. The obvious simplification would be to match both brackets with single
+  captures and choose proper syntax flag programmatically depending on
+  if there's a leading double dash. The documentation states smth about
+  SYNTAX component of MATCH-HIGHLIGHT being "an expression whose value
+  is such a form", can I leverage that here?
+
+--
+Cheers, immerrr
+
+*** Answer
+
+From: Stefan Monnier <monnier@iro.umontreal.ca>
+Subject: Re: font-lock-syntactic-keywords: evaluating arbitrary elisp inside
+	matchers?
+Newsgroups: gmane.emacs.devel
+To: "immerrr again..." <immerrr+lua@gmail.com>
+Cc: emacs-devel@gnu.org
+Date: Mon, 24 Sep 2012 21:03:28 -0400 (6 hours, 43 minutes, 24 seconds ago)
+
+> 1.    `(,(rx
+> 2.        (or (seq (or line-start (not (any "-")))
+> 3.                 (group-n 1 "-") "-[" (group-n 5 (0+ "=")))
+> 4.            (seq (group-n 3 "[")      (group-n 6 (0+ "="))))
+
+> 5.        "[" (minimal-match (0+ anything)) "]"
+
+> 6.        (or (seq (backref 5) (group-n 2 "]"))
+> 7.            (seq (backref 6) (group-n 4 "]"))))
+
+> 8.     (1 "!" nil t) (2 "!" nil t)
+> 9.    (3 "|" nil t) (4 "|" nil t))
+
+Here's your problem: the comments/strings you want to match may span
+several lines, yet the patterns on font-lock-syntactic-keywords cannot
+reliably match more than a single line (because when a line is modified,
+font-lock only looked for that pattern in that line, for example).
+
+So you need to do something more like:
+
+For syntax-propertize (which is Emacs-24's successor to
+font-lock-syntactic-keywords), I'd use something like:
+
+(defun lua-syntax-propertize (start end)
+  (goto-char start)
+  (lua-syntax-propertize-string-or-comment-end end)
+  (funcall
+   (syntax-propertize-rules
+    ("\\(?:\\(?:^\\|[^-]\\)\\(-\\)-\\)?\\([\\)=*["
+     (1 "< b") ;; Only applied if sub-group1 exists.
+     (2 (prog1 (unless (match-beginning 1) (string-to-syntax "|"))
+          (lua-syntax-propertize-string-or-comment-end end)))))
+   start end))
+
+and then in lua-syntax-propertize-string-or-comment I'd use syntax-ppss
+to check the parser state (i.e. determine if I'm in a type-b comment or
+delimited-string corresponding to a long-bracket construct as opposed to
+some type-a comment or standard string, or plain old code), and if I'm
+in one of those long-bracket-constructs, use (nth 8 ppss) to find the
+beginning, count the number of = used there, then search for the
+matching ]==] pattern and place the matching "> b" or "|" syntax on the
+second closing bracket.
+
+This should reliably work even for long-brackets that span many many lines.
+
+
+        Stefan
+
+

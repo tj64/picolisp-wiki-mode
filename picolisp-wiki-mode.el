@@ -1,4 +1,3 @@
-
 ;;; picolisp-wiki-mode.el --- Emacs Major mode for PicoLisp-Wiki formatted text files
 
 ;; Copyright (C) 2012 Thorsten Jolitz <tjolitz@gmail.com>
@@ -6,7 +5,7 @@
 ;; Author: Thorsten Jolitz <tjolitz@gmail.com>
 ;; Maintainer: Thorsten Jolitz <tjolitz@gmail.com>
 ;; Created: September 01, 2012
-;; Version: 0.9
+;; Version: 1.0
 ;; Keywords: PicoLisp, wiki
 ;; URL: http://picolisp.com/5000/!wiki?home
 
@@ -44,12 +43,13 @@
 ;; Make sure to place `picolisp-wiki-mode.el` somewhere in the
 ;; load-path and add the following lines to your `.emacs` file to
 ;; associate picolisp-wiki-mode with `.text` files:
-;;
-;;     (autoload 'picolisp-wiki-mode "picolisp-wiki-mode"
-;;        "Major mode for editing Picolisp-Wiki files" t)
-;;     (setq auto-mode-alist
-;;        (cons '("\\.text" . picolisp-wiki-mode) auto-mode-alist))
-;;
+
+    (autoload 'picolisp-wiki-mode "picolisp-wiki-mode"
+       "Major mode for editing Picolisp-Wiki files" t)
+    (setq auto-mode-alist
+       ;; (cons '("\\.text" . picolisp-wiki-mode) auto-mode-alist))
+       (cons '("\\.plw" . picolisp-wiki-mode) auto-mode-alist))
+
 ;; There is no consensus on an official file extension so change `.text` to
 ;; `.plw`, `.lw`, `.lwik`, or whatever you call your picolisp-wiki files.
 
@@ -134,8 +134,8 @@
 ;; picolisp-wiki-mode is based on markdown.el (available from ELPA).
 ;; It has benefited greatly from the efforts of the following people:
 ;;
-;;   * Thorsten Jolitz <tjolitz@gmail.com>
-
+;;   * Thorsten Jolitz <tjolitz [AT] gmail [DOT] com>
+;;   * Doug Lewan <dougl [@] shubertticketing [DOT] com>
 ;;; Bugs:
 
 ;; picolisp-wiki-mode is developed and tested primarily using GNU
@@ -391,6 +391,67 @@
 ;; REGEXP
 ;; FIXME consider linebreaks in pattern
 
+;; [start] regexp by Doug Lewan (Newsgroups: gmane.emacs.help)
+
+(defconst picolisp-wiki-regex-plain-text 
+  (concat "\\([[:space:]]*[^}]+\\)[[:space:]]*" ; Matches "123$%^ Чебурашка &*(0-="
+	  )
+  "Regular expression defining what 'plain text' is.")
+
+(defconst  picolisp-wiki-regex-bold-text
+  (concat "\\(!{\\)"
+	  picolisp-wiki-regex-plain-text
+	  "\\(}\\)")
+  "Regular expression defining what 'bold text' is.")
+
+(defconst picolisp-wiki-regex-text
+  (concat "\\("
+	  picolisp-wiki-regex-plain-text
+	  "\\|"
+	  picolisp-wiki-regex-bold-text
+	  "\\)")
+  "Regular expression defining what 'text'.
+Text is a mix of plain text and bold text.")
+
+(defconst picolisp-wiki-regex-list-item-text
+  (concat "\\(-{\\)"
+	  picolisp-wiki-regex-text "+"
+	  "\\(}\\)")
+  "Regular expression defining what a 'list item' is.")
+
+;; [end] regexp by Doug Lewan (Newsgroups: gmane.emacs.help)
+
+;; [start] testcode for regexp by Doug Lewan
+
+;; ;; 
+;; ;; Sunny day test code
+;; ;; 
+;; (defconst test-plain-text (list "foo"
+;; 				"foo bar "
+;; 				"	foo bar baz bat"
+;; 				" --- 123$%^ Чебурашка &*(0-= --- "))
+;; (defconst test-bold-text (mapcar (lambda (text)
+;; 				   (concat "!{" text "}"))
+;; 				 test-plain-text))
+;; (defconst test-list-item-text (mapcar (lambda (list-text)
+;; 				   (concat "-{" list-text "}"))
+;; 				 (append test-plain-text test-bold-text)))
+
+;; (mapc (lambda (test-spec)
+;; 	(let ((re (car test-spec))
+;; 	      (test-data (cdr test-spec)))
+;; 	  (mapc (lambda (item)
+;; 		  (if (string-match re item)
+;; 		      (message "PASS -- [[%s]] matches [[%s]]" re item)
+;; 		    (message "FAIL -- [[%s]] DIDN'T match [[%s]]" re item))
+;; 		  (sit-for 1))
+;; 		test-data)))
+;;       (list (cons picolisp-wiki-regex-plain-text test-plain-text)
+;; 	    (cons picolisp-wiki-regex-bold-text test-bold-text)
+;; 	    (cons picolisp-wiki-regex-list-item-text test-list-item-text)))
+
+;; [end] testcode testcode for regexp by Doug Lewan
+
 (defconst picolisp-wiki-regex-internal-link
   "\\(={\\)\\([^ ]+\\)\\( \\)\\(.*\\)\\(}\\)"
   "Regular expression for an internal link.")
@@ -570,7 +631,9 @@ text.")
    (cons picolisp-wiki-regex-right-floating-content
          '(2 picolisp-wiki-right-floating-content-fact))
    (cons picolisp-wiki-regex-email '(2 picolisp-wiki-url-face))
+   ;; changed from picolisp-wiki-regex-list-item
    (cons picolisp-wiki-regex-list-item '(2 picolisp-wiki-list-item-face))
+   ;; (cons picolisp-wiki-regex-list-item-text 'picolisp-wiki-list-item-face)
    (cons picolisp-wiki-regex-internal-link
          '((2 picolisp-wiki-url-face t)
            (4 picolisp-wiki-internal-link-face t)))
@@ -578,6 +641,7 @@ text.")
          '((2 picolisp-wiki-url-face t)
            (4 picolisp-wiki-external-link-face t)))
    (cons picolisp-wiki-regex-bold '(2 picolisp-wiki-bold-face))
+   ;; (cons picolisp-wiki-regex-bold-text 'picolisp-wiki-bold-face)
    (cons picolisp-wiki-regex-italic '(2 picolisp-wiki-italic-face))
    (cons picolisp-wiki-regex-underlined '(2 picolisp-wiki-underlined-face))
     )

@@ -113,7 +113,7 @@ commands.
 picolisp-wiki-mode is based on `markdown.el` (available from ELPA).
 It has benefited greatly from the efforts of the following people:
 
-  * Thorsten Jolitz tjolitz [at] gmail [dot] com
+  * Thorsten Jolitz *tjolitz [at] gmail [dot] com*
 
 ## Bugs: ##
 
@@ -123,7 +123,7 @@ todo's, see the `HISTORY.org` file in the
 [github-repo](https://github.com/tj64/picolisp-wiki-mode).
 
 If you find any bugs in picolisp-wiki-mode, please construct a test case
-or a patch and email me at tjolitz [at] gmail [dot] com.
+or a patch and email me at *tjolitz [at] gmail [dot] com*.
 
 ## History: ##
 
