@@ -1,21 +1,49 @@
-* TODO Version 1.1
+* TODO Version 1.2
   [2012-09-01 Sa 16:35]
-
+** TODO Ask Alex to replace the old version in /picolisp/lib/el/
+   [2013-01-19 Sa 06:57]
 ** TODO announce new version in mailing-list
   [2012-09-01 Sa 16:35]
 ** TODO change version number picolisp-wiki-mode.el
   [2012-09-01 Sa 16:35]
-** TODO replace download on github
+
+
+* NEXT Version 1.1
   [2012-09-01 Sa 16:35]
 
-
-* NEXT Version 1.0
-  [2012-09-01 Sa 16:35]
-
-** TODO ask in Emacs-developer list if mode might be part of Emacs
-   [2012-09-01 Sa 17:01]
 ** TODO deal with keybindings that don't work on the console
    [2012-09-01 Sa 17:00]
+** TODO fix pre-formatted blocks fontification
+   [2013-01-19 Sa 06:53]
+** TODO Ask Alex to replace the old version in /picolisp/lib/el/
+   [2013-01-19 Sa 06:57]
+** TODO announce new version in mailing-list
+  [2012-09-01 Sa 16:35]
+** TODO change version number picolisp-wiki-mode.el
+  [2012-09-01 Sa 16:35]
+** CANCELLED replace download on github                           :CANCELLED:
+   CLOSED: [2013-01-19 Sa 06:53]
+   :LOGBOOK:
+   - State "CANCELLED"  from "TODO"       [2013-01-19 Sa 06:53] \\
+     no more downloads on github
+   :END:
+  [2012-09-01 Sa 16:35]
+
+
+* DONE Version 1.0
+  CLOSED: [2013-01-19 Sa 06:58]
+  :LOGBOOK:
+  - State "DONE"       from "CANCELLED"  [2013-01-19 Sa 06:58]
+  :END:
+  [2012-09-01 Sa 16:35]
+
+** CANCELLED ask in Emacs-developer list if mode might be part of Emacs :CANCELLED:
+   CLOSED: [2013-01-19 Sa 06:56]
+   :LOGBOOK:
+   - State "CANCELLED"  from "TODO"       [2013-01-19 Sa 06:56] \\
+     makes no sense because of small user base
+   :END:
+   [2012-09-01 Sa 17:01]
 ** CANCELLED figure out and describe in README how to use Tramp for remotely edit PicoLisp-Wiki files :CANCELLED:
    CLOSED: [2012-09-01 Sa 20:36]
    :LOGBOOK:
@@ -29,13 +57,36 @@
    - State "DONE"       from "TODO"       [2012-09-02 So 01:53]
    :END:
    [2012-09-01 Sa 16:38]
-** TODO fix unreliable fontification issue
+** DONE fix unreliable fontification issue
+   CLOSED: [2013-01-19 Sa 06:52]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-01-19 Sa 06:52]
+   :END:
    [2012-09-01 Sa 16:37]
-** TODO announce new version in mailing-list
+** DONE Ask Alex to replace the old version in /picolisp/lib/el/
+   CLOSED: [2013-01-19 Sa 06:58]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-01-19 Sa 06:58]
+   :END:
+   [2013-01-19 Sa 06:57]
+** DONE announce new version in mailing-list
+   CLOSED: [2013-01-19 Sa 06:56]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-01-19 Sa 06:56]
+   :END:
   [2012-09-01 Sa 16:35]
-** TODO change version number picolisp-wiki-mode.el
+** DONE change version number picolisp-wiki-mode.el
+   CLOSED: [2013-01-19 Sa 06:52]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-01-19 Sa 06:52]
+   :END:
   [2012-09-01 Sa 16:35]
-** TODO replace download on github
+** CANCELLED replace download on github                           :CANCELLED:
+   CLOSED: [2013-01-19 Sa 06:50]
+   :LOGBOOK:
+   - State "CANCELLED"  from "TODO"       [2013-01-19 Sa 06:50] \\
+     downloads have been removed from github
+   :END:
   [2012-09-01 Sa 16:35]
 
 
