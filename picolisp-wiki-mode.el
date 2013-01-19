@@ -162,7 +162,7 @@
 
 ;;; Constants =================================================================
 
-(defconst picolisp-wiki-mode-version "0.9"
+(defconst picolisp-wiki-mode-version "1.0"
   "Picolisp-Wiki mode version number.")
 
 ;;; Customizable variables ====================================================
