@@ -105,7 +105,7 @@ and fully visible.
     at the point.  Finally, `C-M-u` will move up to a lower-level
     (more inclusive) visible heading.
 
-FIXME: different header levels are not yet recognized by the outine
+FIXED: different header levels are NOW recognized by the outine
 commands.
 
 ## Acknowledgments: ##
