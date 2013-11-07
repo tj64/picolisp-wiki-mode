@@ -114,7 +114,7 @@
 ;; view (top-level headers only), and the full document view. Pressing
 ;; `TAB` while the point is at a header will cycle through levels of
 ;; visibility for the subtree: completely folded, visible children,
-;; and fully visible. 
+;; and fully visible.
 
 ;;   * Outline Navigation:
 ;;
@@ -394,7 +394,7 @@
 
 ;; [start] regexp by Doug Lewan (Newsgroups: gmane.emacs.help)
 
-(defconst picolisp-wiki-regex-plain-text 
+(defconst picolisp-wiki-regex-plain-text
   (concat "\\([[:space:]]*[^}]+\\)[[:space:]]*" ; Matches "123$%^ Чебурашка &*(0-="
 	  )
   "Regular expression defining what 'plain text' is.")
@@ -424,9 +424,9 @@ Text is a mix of plain text and bold text.")
 
 ;; [start] testcode for regexp by Doug Lewan
 
-;; ;; 
+;; ;;
 ;; ;; Sunny day test code
-;; ;; 
+;; ;;
 ;; (defconst test-plain-text (list "foo"
 ;; 				"foo bar "
 ;; 				"	foo bar baz bat"
@@ -462,37 +462,37 @@ Text is a mix of plain text and bold text.")
   "Regular expression for an external link.")
 
 (defconst picolisp-wiki-regex-comment
-  "\\(#{\\)\\([ 	
+  "\\(#{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for an external link.")
 
 (defconst picolisp-wiki-regex-header-1
-  "\\(1{\\)\\([ 	
+  "\\(1{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for level 1 headers.")
 
 (defconst picolisp-wiki-regex-header-2
-  "\\(2{\\)\\([ 	
+  "\\(2{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for level 2 headers.")
 
 (defconst picolisp-wiki-regex-header-3
-  "\\(3{\\)\\([ 	
+  "\\(3{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for level 3 headers.")
 
 (defconst picolisp-wiki-regex-header-4
-  "\\(4{\\)\\([ 	
+  "\\(4{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for level 4 headers.")
 
 (defconst picolisp-wiki-regex-header-5
-  "\\(5{\\)\\([ 	
+  "\\(5{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for level 5 headers.")
 
 (defconst picolisp-wiki-regex-header-6
-  "\\(6{\\)\\([ 	
+  "\\(6{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for level 6 headers.")
 
@@ -501,39 +501,39 @@ Text is a mix of plain text and bold text.")
   "Regular expression for matching Picolisp-Wiki horizontal rules.")
 
 (defconst picolisp-wiki-regex-left-floating-content
-  "\\(<{\\)\\([ 	
+  "\\(<{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for matching left-floating-content.")
 
 (defconst picolisp-wiki-regex-non-floating-content
-  "\\(@{\\)\\([ 	
+  "\\(@{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for matching non-floating-content.")
 
 (defconst picolisp-wiki-regex-right-floating-content
-  "\\(>{\\)\\([ 	
+  "\\(>{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for matching right-floating-content.")
 
 (defconst picolisp-wiki-regex-pre-block
-   "\\(:{\\)\\([ 	
+   "\\(:{\\)\\([
 ]*[^}]+\\)\\(}\\)"
 
 ;;  "\\(:{\\)\\([ \t\n]*[^}]+\\)\\(}\\)"
 
-;;   "\\(:{\\)\\([ 	
+;;   "\\(:{\\)\\([
 ;; ][^}]+\\)\\(}\\)"
   "Regular expression for matching preformatted text sections.")
 
 ;; (defconst picolisp-wiki-regex-unordered-list
-;;   "\\(^[\\t ]*\\*{\\)\\([ 	]*[ 
-;; ]+\\)\\(-{.*}[ 	
+;;   "\\(^[\\t ]*\\*{\\)\\([ 	]*[
+;; ]+\\)\\(-{.*}[
 ;; ]+\\)\\{1,\\}\\(}\\)"
 ;;   "Regular expression for matching unordered list markers.")
 
 ;; (defconst picolisp-wiki-regex-ordered-list
-;;   "\\(^[\\t ]*\\+{\\)\\([ 	]*[ 
-;; ]+\\)\\(-{.*}[ 	
+;;   "\\(^[\\t ]*\\+{\\)\\([ 	]*[
+;; ]+\\)\\(-{.*}[
 ;; ]+\\)\\{1,\\}\\(}\\)"
 ;;   "Regular expression for matching ordered list markers.")
 
@@ -556,22 +556,22 @@ Text is a mix of plain text and bold text.")
   "Regular expression for matching a closing brace.")
 
 (defconst picolisp-wiki-regex-list-item
-  "\\(-{\\)\\([ 	
+  "\\(-{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for matching a list item.")
 
 (defconst picolisp-wiki-regex-bold
-  "\\(!{\\)\\([ 	
+  "\\(!{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for matching bold text.")
 
 (defconst picolisp-wiki-regex-italic
-  "\\(/{\\)\\([ 	
+  "\\(/{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for matching italic text.")
 
 (defconst picolisp-wiki-regex-underlined
-   "\\(_{\\)\\([ 	
+   "\\(_{\\)\\([
 ]*[^}]+\\)\\(}\\)"
   "Regular expression for matching underlined text.")
 
@@ -834,7 +834,7 @@ and point is inside the nested markup braces."
       (search-backward "{" nil t 1)
       (backward-char)
       (if (not (looking-at "-{"))
-          (if (and               
+          (if (and
                (not second-trial-p)
                (looking-at
                 (concat "\\(\\*\\|\\+\\|&\\|/\\|_\\|\\^\\|"
@@ -847,13 +847,13 @@ and point is inside the nested markup braces."
            (search-forward "}" nil t 1))
          (setq item-end (point))
          (> item-end pt))))))
-        
+
 (defun picolisp-wiki-insert-list-item ()
   "Insert a list-item.
 If Transient Mark mode is on and a region is active, it becomes the text of a list item."
   (interactive)
-  (if (not (picolisp-wiki--inside-list-item-p))   
-      (progn  
+  (if (not (picolisp-wiki--inside-list-item-p))
+      (progn
         (picolisp-wiki-wrap-or-insert "-{" "}")
         (backward-char 1))
     (end-of-line)
